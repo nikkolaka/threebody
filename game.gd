@@ -9,15 +9,21 @@ var DEFAULT_VELOCITY = 3
 var planet_counter = 0
 var start_vec = Vector2(0,0)
 var can_spawn = true
+var scroll = 0
+var speed = 0.1
 
 
 func _input(event):
-	
-	if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed():
+		
+	if event is not InputEventMouseButton:
+		return
+		
+	if event.button_index == 1 and event.is_released():
+		
 		start_vec = event.position
 		
-	if event is InputEventMouseButton and event.button_index == 1 and event.is_released() and can_spawn:
-		
+		if not can_spawn:
+			return
 		
 		print("Mouse position: ", event.position)
 		var sun_instance = sun_scene.instantiate()
@@ -25,16 +31,30 @@ func _input(event):
 		var init_magnitude = start_vec.distance_to(event.position) * 2
 		var direction = event.position.angle_to_point(start_vec)
 		
-		sun_instance.velocity.x +=  abs(init_magnitude)*cos(direction)
-		sun_instance.velocity.y +=  abs(init_magnitude)*sin(direction)
+		sun_instance.velocity.x +=  abs(init_magnitude)*cos(direction)*speed
+		sun_instance.velocity.y +=  abs(init_magnitude)*sin(direction)*speed
 		
 		
 		sun_instance.position = event.position
 		sun_instance.id = planet_counter
+		sun_instance.radius += scroll
 		planet_counter += 1
 		add_child(sun_instance)
 		
 		sun_list.append(sun_instance)
+		
+	if event.button_index == 4:
+		scroll += 1
+	elif event.button_index == 5:
+		scroll -= 1
+	
+	if scroll < 1:
+		scroll = 0
+	elif scroll > 100:
+		scroll = 100
+		
+		
+		
 		
 		
 
@@ -75,10 +95,10 @@ func gravity(sun, delta):
 		
 		if sun.position.distance_to(other_sun.position) <= (other_sun.radius):
 			
-			for real_other_sun in sun_list:
-				if real_other_sun.id == other_sun.id:
-					real_other_sun.queue_free()
-					sun_list.erase(real_other_sun)
+			#for real_other_sun in sun_list:
+				#if real_other_sun.id == other_sun.id:
+					#real_other_sun.queue_free()
+					#sun_list.erase(real_other_sun)
 			
 			sun.queue_free()
 			sun_list.erase(sun)
