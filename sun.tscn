@@ -1,32 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0ipbfssw8hq0"]
 
-[sub_resource type="GDScript" id="GDScript_b5bbf"]
-script/source = "extends Node2D
-
-var rng = RandomNumberGenerator.new()
-var min_size = 1
-var max_size = 2
-var sprite_scale = 0.1
-var sprite_offset = Vector2(400, 400)
-
-
-@export var mass = 1
-@export var id: int
-@export var radius = rng.randi_range(min_size,max_size)
-@export var velocity: Vector2 = Vector2(0,0)
-
-func _ready():
-	mass = (4/3)*PI*pow(radius, 3)
-
-func _draw():
-	print(\"Drawn position: \", position)
-	draw_circle(Vector2(0,0), radius, Color.RED)
-"
+[ext_resource type="Script" path="res://sun.gd" id="1_3efx1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l7vig"]
 
 [node name="sun" type="Area2D"]
-script = SubResource("GDScript_b5bbf")
+script = ExtResource("1_3efx1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_l7vig")

@@ -10,25 +10,21 @@ var planet_counter = 0
 var start_vec = Vector2(0,0)
 var can_spawn = true
 var scroll = 0
-var speed = 0.1
+var speed = 1
 
 
 func _input(event):
 		
-	if event is not InputEventMouseButton:
+	if event is not InputEventMouseButton or not can_spawn:
 		return
 		
+	if event.button_index == 1 and event.is_pressed():
+		start_vec = event.position
 	if event.button_index == 1 and event.is_released():
 		
-		start_vec = event.position
-		
-		if not can_spawn:
-			return
-		
-		print("Mouse position: ", event.position)
 		var sun_instance = sun_scene.instantiate()
 		
-		var init_magnitude = start_vec.distance_to(event.position) * 2
+		var init_magnitude = start_vec.distance_to(event.position)
 		var direction = event.position.angle_to_point(start_vec)
 		
 		sun_instance.velocity.x +=  abs(init_magnitude)*cos(direction)*speed
@@ -77,7 +73,6 @@ func _process(delta):
 func gravity(sun, delta):
 	
 	var collided = false
-	var force = Vector2	(0,0)
 	
 	for other_sun in sun_copy_list:
 		
@@ -103,7 +98,7 @@ func gravity(sun, delta):
 			sun.queue_free()
 			sun_list.erase(sun)
 			
-	sun.position += sun.velocity*delta
+	sun.position += sun.velocity*delta/sun.mass
 
 
 func _on_pause_button_down():
@@ -133,4 +128,4 @@ func _on_pause_mouse_exited():
 func _on_clear_button_up():
 	for sun in sun_list:
 		sun.queue_free()
-	sun_list = [] # Replace with function body.
+	sun_list = []
