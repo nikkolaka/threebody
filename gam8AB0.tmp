@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://bfhgfvb3satgb"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_bqu81"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_bqu81")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 100.0
+
+[node name="Clear" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.333
+offset_bottom = 0.0499992
+text = "CLEAR"
+metadata/_edit_use_anchors_ = true
+
+[node name="Start" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.667
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.0500107
+theme_override_font_sizes/font_size = 19
+text = "START"
+metadata/_edit_use_anchors_ = true
+
+[node name="Pause" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.333
+anchor_right = 1.0
+anchor_bottom = 0.667
+offset_top = 0.0499992
+offset_bottom = -0.0500107
+theme_override_font_sizes/font_size = 16
+text = "STOP"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="button_up" from="Control/Clear" to="." method="_on_clear_button_up"]
+[connection signal="button_up" from="Control/Start" to="." method="_on_start_button_up"]
+[connection signal="mouse_entered" from="Control/Start" to="." method="_on_start_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Start" to="." method="_on_start_mouse_exited"]
+[connection signal="button_down" from="Control/Pause" to="." method="_on_pause_button_down"]
+[connection signal="focus_entered" from="Control/Pause" to="." method="_on_pause_focus_entered"]
+[connection signal="mouse_entered" from="Control/Pause" to="." method="_on_pause_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Pause" to="." method="_on_pause_mouse_exited"]
